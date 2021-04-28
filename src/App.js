@@ -4,6 +4,8 @@ import "./App.css"
 import { BrowserRouter, Route } from 'react-router-dom'
 import SignIn from './components/screens/SignIn'
 import SignUp from './components/screens/SignUp'
+import Fotaupload from './components/screens/Fotaupload'
+
 function App() {
   return (
     <BrowserRouter>
@@ -13,6 +15,10 @@ function App() {
       </Route>
       <Route exact path='/SignUp'>
         <SignUp />
+
+      </Route>
+      <Route exact path='/Fotaupload'>
+        <Fotaupload />
 
       </Route>
     </BrowserRouter>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import M from 'materialize-css'
 
 const SignIn = () => {
-    // const histor = useHistory()
+    const history = useHistory()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const PostData = () => {
@@ -27,7 +27,11 @@ const SignIn = () => {
                     if (data.role === 'releaseManager') {
                         console.log("role based:" + data.role)
 
+                        localStorage.setItem("jwt", data.token)
+                        localStorage.setItem("user", JSON.stringify(data))
+                        console.log("user :" + username.role)
                         M.toast({ html: "SignIn Success", classes: "#43a047 green darken-1" })
+                        history.push('/Fotaupload.js')
 
                     }
 
