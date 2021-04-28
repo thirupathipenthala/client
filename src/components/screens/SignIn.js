@@ -25,7 +25,7 @@ const SignIn = () => {
                 }
                 else {
                     if (data.role === 'releaseManager') {
-                        console.log("role :" + data.role)
+                        console.log("role based:" + data.role)
 
                         M.toast({ html: "SignIn Success", classes: "#43a047 green darken-1" })
 
