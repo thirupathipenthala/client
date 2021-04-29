@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from './components/Navbar'
 import "./App.css"
-import { BrowserRouter, Route, Router, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import SignIn from './components/screens/SignIn'
 import SignUp from './components/screens/SignUp'
 import Fotaupload from './components/screens/Fotaupload'
