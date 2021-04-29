@@ -31,7 +31,7 @@ const SignIn = () => {
                         localStorage.setItem("user", JSON.stringify(data))
                         console.log("user :" + username.role)
                         M.toast({ html: "SignIn Success", classes: "#43a047 green darken-1" })
-                        history.push('/Fotaupload.js')
+                        history.push('/Fotaupload')
 
                     }
 

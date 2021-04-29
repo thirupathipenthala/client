@@ -1,8 +1,11 @@
 import React from 'react'
 
 const Fotaupload = () => {
+    console.log("police")
     return (
-        <h1>Hello</h1>
+        <div>
+            <h1>Reddy</h1>
+        </div>
     )
 }
 

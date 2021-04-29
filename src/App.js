@@ -19,7 +19,6 @@ function App() {
       </Route>
       <Route exact path='/Fotaupload'>
         <Fotaupload />
-
       </Route>
     </BrowserRouter>
   );
