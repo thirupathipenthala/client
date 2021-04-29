@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import M from 'materialize-css'
-
+import '../../App.css';
 const SignIn = () => {
     const history = useHistory()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const PostData = () => {
-
         fetch("/auth/login", {
             method: "post",
             headers: {
@@ -32,17 +31,15 @@ const SignIn = () => {
                         console.log("user :" + username.role)
                         M.toast({ html: "SignIn Success", classes: "#43a047 green darken-1" })
                         history.push('/Fotaupload')
-
                     }
-
                 }
             }).catch(err => {
                 console.log(err)
             })
     }
     return (
-        <div className="mycard">
-            <div className="card auth-card input-field">
+        <div className="container">
+            <div className="">
                 <h2>TechTez</h2>
                 <input
                     type="text"
@@ -56,7 +53,7 @@ const SignIn = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                <button className=""
                     onClick={() => PostData()}
                 >
                     Login
@@ -65,12 +62,9 @@ const SignIn = () => {
                     <Link to="/SignUp.js">Dont have an account ?</Link>
                 </h5>
                 <h6>
-
                 </h6>
-
             </div>
         </div>
     )
 }
-
 export default SignIn
