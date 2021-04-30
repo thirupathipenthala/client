@@ -7,7 +7,7 @@ const SignIn = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const PostData = () => {
-        fetch("/auth/login", {
+        fetch('http://localhost:5000/auth/login', {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
