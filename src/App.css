@@ -1,4 +1,20 @@
-.container{
-    width: 100%;            
-    background-image: url(./images/LoginBackground.png);
-  }
+:root {
+    --main-color: #0058ff
+}
+.page__inner {
+    padding: 40px 60px 40px 40px;
+}
+.page__title {
+    margin-top: 0;
+    color: var(--main-color);
+    font-weight: bold;
+}
+.el-card {
+    overflow: unset !important;
+}
+.w-100 {
+    width: 100% !important;
+}
+.el-row {
+    margin-bottom: 20px;
+}

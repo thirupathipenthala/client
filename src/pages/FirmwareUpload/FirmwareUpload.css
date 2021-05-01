@@ -1,0 +1,10 @@
+#firmware-upload-page .main-table thead tr {
+    background-color: var(--main-color);
+}
+#firmware-upload-page .main-table thead tr th {
+    background-color: var(--main-color);
+}
+#firmware-upload-page .main-table thead tr th>.cell {
+    background-color: var(--main-color);
+    color: white;
+}

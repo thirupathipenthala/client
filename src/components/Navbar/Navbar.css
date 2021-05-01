@@ -1,0 +1,23 @@
+.app-main-nav.el-menu--dark {
+    background-color: #5174c1 !important;
+    color: white;
+}
+.app-main-nav {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 40px;
+}
+.app-main-nav:after, .app-main-nav:before {
+    display: none;
+}
+.app-main-nav .user-icon {
+    width: 100%;
+    max-width: 45px;
+}
+/* .app-main-nav .el-submenu.is-opened .el-submenu__title:hover {
+    background: transparent !important;
+} */
+
+.app-main-nav.el-menu--horizontal.el-menu--dark .el-submenu__title:hover {
+    background: transparent !important;
+}
