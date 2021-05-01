@@ -56,6 +56,8 @@ const FirmwareUpload = () => {
             setIsLoading(true);
             getDeviceList(selectedGroup).then(response => {
                 setDeviceList(response.resultant);
+                const ids = response.resultant.map((d) => d.dId)
+                updateSelectedDeviceList(ids)
             }).catch(error => console.log(error))
             .finally(() => {
                 setIsLoading(false);
@@ -90,7 +92,10 @@ const FirmwareUpload = () => {
                                     </Layout.Col>
                                     <Layout.Col sm={24} md={8}>
                                     {/* <Checkbox.Group> */}
-                                        <Select multiple value={[]} noDataText="No Data" popperClass={"DL-"+selectedDeviceList.length} className="w-100" placeholder={"Device List (" +selectedDeviceList.length + ")"}>
+                                        <div className="w-100 multi-select-custom">
+                                            <label className="multi-select-custom__label">{"Device List (" +selectedDeviceList.length + ")"}</label>
+                                        
+                                        <Select multiple value={[]} noDataText="No Data" popperClass={"DL-"+selectedDeviceList.length} className="w-100" placeholder={" "}>
                                         
                                             {deviceList.map((d) => {
                                                 return <Select.Option key={"dn-"+d.dId}>
@@ -117,6 +122,7 @@ const FirmwareUpload = () => {
                                         
                                         
                                         </Select>
+                                        </div>
                                     {/* </Checkbox.Group> */}
                                     </Layout.Col>
                                 </Layout.Row>

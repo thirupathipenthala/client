@@ -8,3 +8,13 @@
     background-color: var(--main-color);
     color: white;
 }
+.multi-select-custom {
+    position: relative;
+}
+.multi-select-custom__label {
+    position: absolute;
+    z-index: 10;
+    top: 9px;
+    left: 10px;
+    color: #bfcbd9;
+}
