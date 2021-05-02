@@ -18,3 +18,13 @@
     left: 10px;
     color: #bfcbd9;
 }
+img.status-img {
+    width: 30px;
+    vertical-align: middle;
+}
+img.action-icon {
+    width: 30px;
+    vertical-align: middle;
+    margin: 0 2px;
+    cursor: pointer;
+}

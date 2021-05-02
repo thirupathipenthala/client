@@ -16,7 +16,6 @@ const Sidebar = () => {
                 message: 'Are you sure you want to exit the application?',
                 showClose: false,
                 showCancelButton: true,
-                confirmButtonText: 'OK',
                 cancelButtonText: 'Cancel',
                 confirmButtonClass: 'el-button--danger',
                 cancelButtonClass: 'el-button--success',

@@ -28,3 +28,6 @@
 .confirm-box .el-message-box__btns {
     text-align: center;
 }
+.confirm-box.no-btns .el-message-box__btns {
+    display: none;
+}

@@ -21,3 +21,6 @@
 .app-main-nav.el-menu--horizontal.el-menu--dark .el-submenu__title:hover {
     background: transparent !important;
 }
+.main-logo {
+    width: 190px;
+}

@@ -22,3 +22,31 @@ export const getDeviceList = (groupId) => {
         }
     }).then(res => res.json())
 }
+
+
+export const getDeviceFirmware = (page = 1) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/api/get-device-firmware?page=${page}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => res.json())
+}
+
+export const deleteFirmwareData = (id) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/api/delete-device-firmware/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => res.json())
+}
+
+export const viewFirmwareData = (id, page) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/api/view-device-firmware/${id}?page=${page}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => res.json())
+}
