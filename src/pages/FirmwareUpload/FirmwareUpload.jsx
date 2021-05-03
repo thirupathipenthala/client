@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import NavBar from '../../components/Navbar/Navbar';
-import { Layout, Card, Select, Input, Table, Pagination, Button, Loading, Checkbox, MessageBox } from 'element-react';
+import { Layout, Card, Select, Input, Table, Pagination, Button, Loading, Checkbox, MessageBox, Form } from 'element-react';
 import './FirmwareUpload.css';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { getGroupInfos, getDeviceList, getDeviceFirmware, deleteFirmwareData } from '../../services/firmware';
+import { getGroupInfos, getDeviceList, getDeviceFirmware, deleteFirmwareData, createFotaFirmware } from '../../services/firmware';
 import DeviceInfo from '../../components/DeviceInfo/DeviceInfo';
 
 const FirmwareUpload = () => {
@@ -16,6 +16,9 @@ const FirmwareUpload = () => {
     const [total, setTotal] = useState(0);
     const [selectedGroup, updateSelectedGroup] = useState(null);
     const [selectedDeviceList, updateSelectedDeviceList] = useState([]);
+    const [formData, updateFormData] = useState({});
+
+    const formRef = useRef(null)
 
     useEffect(() => {
         /**
@@ -188,6 +191,43 @@ const FirmwareUpload = () => {
         }
     ],[]);
 
+    const submitHandler = useCallback((d) => {
+        console.log(formRef)
+        formRef.current.validate((valid) => {
+            if(valid) {
+                const data = new FormData();
+                const group = deviceGroup.find(dv => dv.groupId == d.group_name)
+                data.append('group_name', group.groupName)
+                data.append('file', d.file)
+                data.append('version', d.version)
+                data.append('description', d.description);
+                data.append('file_name', d.file_name);
+                const device = deviceList.filter((d) => {
+                    return selectedDeviceList.includes(d.dId)
+                })
+                data.append('devices', JSON.stringify(device));
+                setIsLoading(true);
+                createFotaFirmware(data)
+                    .then(() => {
+                        updateFormData({})
+                        getDeviceFirmware(page || 1)
+                            .then(response => {
+                                setFirmwareList(response.data);
+                                setTotal(response.total);
+                            })
+                            .catch(error => console.log(error))
+                            .finally(() => {
+                                setIsLoading(false);
+                            })
+                    })
+                    .catch(() => {
+
+                    })
+            }
+        })
+            
+    },[deviceList, selectedDeviceList, deviceGroup, page, formRef]);
+
 
     return <div id="firmware-upload-page" className="page">
         <Loading loading={isLoading} text="Loading...">
@@ -203,78 +243,126 @@ const FirmwareUpload = () => {
                             <h4 className="page__title">Release Manager</h4>
                             <Card>
                                 <h5>FOTA Upload</h5>
-                                <Layout.Row gutter="20">
-                                    <Layout.Col sm={24} md={8}>
-                                        <Select className="w-100" placeholder="Group List" onChange={(v) => {
-                                            updateSelectedGroup(v);
-                                        }}>
-                                            {deviceGroup.map((d) => {
-                                                return <Select.Option label={d.groupName} key={'gl-'+d.groupId} value={d.groupId}>{d.groupName}</Select.Option>
-                                            })}
-                                        </Select>
-                                    </Layout.Col>
-                                    <Layout.Col sm={24} md={8}>
-                                    {/* <Checkbox.Group> */}
-                                        <div className="w-100 multi-select-custom">
-                                            <label className="multi-select-custom__label">{"Device List (" +selectedDeviceList.length + ")"}</label>
-                                        
-                                        <Select multiple value={[]} noDataText="No Data" popperClass={"DL-"+selectedDeviceList.length} className="w-100" placeholder={" "}>
-                                            {deviceList.length !== 0 ?
-                                            <Select.Option>
-                                                <Checkbox checked={selectedDeviceList.length === deviceList.length} label={"Select All"} onChange={() => {
-                                                    if(selectedDeviceList.length === deviceList.length) {
-                                                        updateSelectedDeviceList([]);
-                                                    } else {
-                                                        const ids = deviceList.map((d) => d.dId)
-                                                        updateSelectedDeviceList(ids)
-                                                    }
-                                                }}/>
-                                            </Select.Option> : null }
-                                            {deviceList.map((d) => {
-                                                return <Select.Option key={"dn-"+d.dId}>
-                                                    <div>
-                                                        <div>
-                                                            <Checkbox onChange={() => {
-                                                                if(!selectedDeviceList.includes(d.dId)) {
-                                                                    const sd = [...selectedDeviceList];
-                                                                    sd.push(d.dId);
-                                                                    updateSelectedDeviceList(sd)
-                                                                } else {
-                                                                    const i = selectedDeviceList.indexOf(d.dId);
-                                                                    const sd = [...selectedDeviceList];
-                                                                    sd.splice(i, 1);
-                                                                    updateSelectedDeviceList(sd)
-                                                                }
+                                <Form model={formData} ref={formRef} rules={{
+                                    group_name: [
+                                        {
+                                            required: true,
+                                            trigger: 'blur'
+                                        }
+                                    ],
+                                    file: [
+                                        {
+                                            required: true,
+                                            trigger: 'blur'
+                                        }
+                                    ],
+                                    version: [
+                                        {
+                                            required: true,
+                                            trigger: 'blur'
+                                        }
+                                    ],
+                                    description: [
+                                        {
+                                            required: true,
+                                            trigger: 'blur'
+                                        }
+                                    ],
 
-                                                            }} checked={selectedDeviceList.includes(d.dId)} label={d.serialNo + " - "+d.devType}></Checkbox>
+                                }}>
+                                    <Layout.Row gutter="20">
+                                        <Layout.Col sm={24} md={8}>
+                                            <Form.Item prop="group_name">
+                                                <Select className="w-100" placeholder="Group List" onChange={(v) => {
+                                                    updateSelectedGroup(v);
+                                                    updateFormData({...formData, group_name: v})
+                                                }}>
+                                                    {deviceGroup.map((d) => {
+                                                        return <Select.Option label={d.groupName} key={'gl-'+d.groupId} value={d.groupId}>{d.groupName}</Select.Option>
+                                                    })}
+                                                </Select>
+                                            </Form.Item>
+                                        </Layout.Col>
+                                        <Layout.Col sm={24} md={8}>
+                                        {/* <Checkbox.Group> */}
+                                            <div className="w-100 multi-select-custom">
+                                                <label className="multi-select-custom__label">{"Device List (" +selectedDeviceList.length + ")"}</label>
+                                            {/* <Form.Item prop="group_name"> */}
+                                            <Select multiple value={[]} noDataText="No Data" popperClass={"DL-"+selectedDeviceList.length} className="w-100" placeholder={" "}>
+                                                {deviceList.length !== 0 ?
+                                                <Select.Option>
+                                                    <Checkbox checked={selectedDeviceList.length === deviceList.length} label={"Select All"} onChange={() => {
+                                                        if(selectedDeviceList.length === deviceList.length) {
+                                                            updateSelectedDeviceList([]);
+                                                        } else {
+                                                            const ids = deviceList.map((d) => d.dId)
+                                                            updateSelectedDeviceList(ids)
+                                                        }
+                                                    }}/>
+                                                </Select.Option> : null }
+                                                {deviceList.map((d) => {
+                                                    return <Select.Option key={"dn-"+d.dId}>
+                                                        <div>
+                                                            <div>
+                                                                <Checkbox onChange={() => {
+                                                                    if(!selectedDeviceList.includes(d.dId)) {
+                                                                        const sd = [...selectedDeviceList];
+                                                                        sd.push(d.dId);
+                                                                        updateSelectedDeviceList(sd)
+                                                                    } else {
+                                                                        const i = selectedDeviceList.indexOf(d.dId);
+                                                                        const sd = [...selectedDeviceList];
+                                                                        sd.splice(i, 1);
+                                                                        updateSelectedDeviceList(sd)
+                                                                    }
+
+                                                                }} checked={selectedDeviceList.includes(d.dId)} label={d.serialNo + " - "+d.devType}></Checkbox>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    
-                                                </Select.Option>
-                                            })}
-                                        
-                                        
-                                        </Select>
-                                        </div>
-                                    {/* </Checkbox.Group> */}
-                                    </Layout.Col>
-                                </Layout.Row>
-                                <Layout.Row gutter="20">
-                                    <Layout.Col sm={24} md={8}>
-                                        <Input type="file" />
-                                    </Layout.Col>
-                                    <Layout.Col sm={24} md={8}>
-                                        <Input type="text" placeholder="Version"/>
-                                    </Layout.Col>
-                                    <Layout.Col sm={24} md={8}>
-                                        <Input type="text" placeholder="Description"/>
-                                    </Layout.Col>
-                                </Layout.Row>
-                                <Layout.Row style={{textAlign: "right"}}>
-                                    <Layout.Col>
-                                        <Button type="primary">Submit</Button>
-                                    </Layout.Col>
-                                </Layout.Row>
+                                                        
+                                                    </Select.Option>
+                                                })}
+                                            
+                                            
+                                            </Select>
+                                            {/* </Form.Item> */}
+                                            </div>
+                                        {/* </Checkbox.Group> */}
+                                        </Layout.Col>
+                                    </Layout.Row>
+                                    <Layout.Row gutter="20">
+                                        <Layout.Col sm={24} md={8}>
+                                            <Form.Item prop="file">
+                                                <input type="file" onChange={(event) => {
+                                                    const file = event.target.files[0];
+                                                    console.log(file);
+                                                    const blob = new Blob([file],{type: file.type})
+                                                    console.log(blob)
+                                                    updateFormData({...formData, file: blob, file_name: file.name})
+                                                }} />
+                                            </Form.Item>
+                                        </Layout.Col>
+                                        <Layout.Col sm={24} md={8}>
+                                            <Form.Item prop="version">
+                                                <Input type="text" placeholder="Version" onChange={(v) => {
+                                                    updateFormData({...formData, version: v})
+                                                }}/>
+                                            </Form.Item>
+                                        </Layout.Col>
+                                        <Layout.Col sm={24} md={8}>
+                                            <Form.Item prop="description">
+                                                <Input type="text" placeholder="description" onChange={(v) => {
+                                                    updateFormData({...formData, description: v})
+                                                }}/>
+                                            </Form.Item>
+                                        </Layout.Col>
+                                    </Layout.Row>
+                                    <Layout.Row style={{textAlign: "right"}}>
+                                        <Layout.Col>
+                                            <Button type="primary" onClick={() => submitHandler(formData)}>Submit</Button>
+                                        </Layout.Col>
+                                    </Layout.Row>
+                                </Form>
                             </Card>
                         </Layout.Col>
                     </Layout.Row>

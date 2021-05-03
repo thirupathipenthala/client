@@ -51,15 +51,13 @@ export const viewFirmwareData = (id, page) => {
     }).then(res => res.json())
 }
 
-export const getfotaFirmwareuplode = (formData) => {
+export const createFotaFirmware = (formData) => {
     return fetch(`${process.env.REACT_APP_API_PATH}/api/fota-Firmware-uplode`, {
         method: "post",
         headers: {
-            "Content-Type": "application/json"
+            // "Content-Type": "multipart/form-data"
         },
-        body: JSON.stringify(
-            formData
-        )
+        body: formData
     }).
         then(res => res.json())
 };
