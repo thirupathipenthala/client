@@ -1,7 +1,7 @@
 /**
  * get group info details
  */
- export const getGroupInfos = () => {
+export const getGroupInfos = () => {
     return fetch(
         `/IOT_WEB_APP/rest/consumer/getGroupInfos`,
         {
@@ -11,7 +11,7 @@
             },
         }
     ).then(res => res.json())
-    
+
 };
 
 export const getDeviceList = (groupId) => {
@@ -50,3 +50,16 @@ export const viewFirmwareData = (id, page) => {
         }
     }).then(res => res.json())
 }
+
+export const getfotaFirmwareuplode = (formData) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/api/fota-Firmware-uplode`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(
+            formData
+        )
+    }).
+        then(res => res.json())
+};
