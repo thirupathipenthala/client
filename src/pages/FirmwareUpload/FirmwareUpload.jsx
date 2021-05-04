@@ -3,7 +3,7 @@ import NavBar from '../../components/Navbar/Navbar';
 import { Layout, Card, Select, Input, Table, Pagination, Button, Loading, Checkbox, MessageBox, Form } from 'element-react';
 import './FirmwareUpload.css';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { getGroupInfos, getDeviceList, getDeviceFirmware, deleteFirmwareData, createFotaFirmware } from '../../services/firmware';
+import { getGroupInfos, getDeviceList, getDeviceFirmware, deleteFirmwareData, createFotaFirmware, updateFirmwareData } from '../../services/firmware';
 import DeviceInfo from '../../components/DeviceInfo/DeviceInfo';
 
 const FirmwareUpload = () => {
@@ -119,6 +119,42 @@ const FirmwareUpload = () => {
         })
     }, [])
 
+
+    const updateFirmware = useCallback((id) => {
+        MessageBox.msgbox({
+            customClass: 'confirm-box',
+            title: 'Message',
+            message: 'Are you sure you want to update the device?',
+            showClose: false,
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            confirmButtonClass: 'el-button--danger',
+            cancelButtonClass: 'el-button--success',
+            confirmButtonText: 'Okay'
+        }).then(action => {
+            if (action === 'confirm') {
+                setIsLoading(true);
+                updateFirmwareData(id)
+                    .then((res) => {
+                        if (res.error === false) {
+                            getDeviceFirmware(page || 1)
+                                .then(response => {
+                                    setFirmwareList(response.data);
+                                    setTotal(response.total);
+                                })
+                                .catch(error => console.log(error))
+                                .finally(() => {
+                                    setIsLoading(false);
+                                })
+                        }
+
+                    })
+                    .catch(error => console.log(error))
+            }
+
+        })
+    }, [page]);
+
     const columns = useMemo(() => [
         {
             label: "FOTA Id",
@@ -180,7 +216,10 @@ const FirmwareUpload = () => {
             width: "150",
             render: (row) => {
                 return <>
-                    <img className="action-icon edit" src="/images/editFOTAold.png" alt="edit" />
+                    <img className="action-icon edit" src="/images/editFOTAold.png" alt="edit" onClick={() => {
+                        updateFirmware(row.id)
+
+                    }} />
                     <img className="action-icon delete" src="/images/Delet.png" alt="delete" onClick={() => {
                         deleteFirmware(row.id)
                     }} />

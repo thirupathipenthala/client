@@ -41,6 +41,14 @@ export const deleteFirmwareData = (id) => {
         }
     }).then(res => res.json())
 }
+export const updateFirmwareData = (id) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/api/update-device-firmware/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => res.json())
+}
 
 export const viewFirmwareData = (id, page) => {
     return fetch(`${process.env.REACT_APP_API_PATH}/api/view-device-firmware/${id}?page=${page}`, {
