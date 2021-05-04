@@ -17,7 +17,7 @@ const FirmwareUpload = () => {
     const [selectedGroup, updateSelectedGroup] = useState(null);
     const [selectedDeviceList, updateSelectedDeviceList] = useState([]);
     const [formData, updateFormData] = useState({});
-
+    const [role, updateRole] = useState('')
     const formRef = useRef(null)
 
     useEffect(() => {
@@ -29,6 +29,7 @@ const FirmwareUpload = () => {
                 setDeviceGroup(response[0].resultant);
                 setFirmwareList(response[1].data);
                 setTotal(response[1].total);
+                updateRole(JSON.parse(localStorage.getItem('user')));
 
             })
             .catch(error => console.log(error))
@@ -240,7 +241,7 @@ const FirmwareUpload = () => {
                     <div className="page__inner">
                         <Layout.Row>
                             <Layout.Col span={24}>
-                                <h4 className="page__title">Release Manager</h4>
+                                <h4 className="page__title">{role.role}</h4>
                                 <Card>
                                     <h5>FOTA Upload</h5>
                                     <Form model={formData} ref={formRef} rules={{
