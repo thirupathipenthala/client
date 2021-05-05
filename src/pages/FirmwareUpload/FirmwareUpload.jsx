@@ -238,6 +238,7 @@ const FirmwareUpload = () => {
                 const data = new FormData();
                 const group = deviceGroup.find(dv => dv.groupId == d.group_name)
                 data.append('group_name', group.groupName)
+                data.append('fotaId', group.groupId)
                 data.append('file', d.file)
                 data.append('version', d.version)
                 data.append('description', d.description);
