@@ -1,3 +1,4 @@
+import {MessageBox} from 'element-react';
 /**
  * get group info details
  */
@@ -69,3 +70,26 @@ export const createFotaFirmware = (formData) => {
     }).
         then(res => res.json())
 };
+
+
+
+export const logout = (history) => {
+    MessageBox.msgbox({
+        customClass: 'confirm-box',
+        title: 'Message',
+        message: 'Are you sure you want to exit the application?',
+        showClose: false,
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        confirmButtonClass: 'el-button--danger',
+        cancelButtonClass: 'el-button--success',
+        confirmButtonText: 'Exit'
+      }).then(action => {
+        if(action === 'confirm') {
+          localStorage.removeItem('jwt');
+          localStorage.removeItem('user');
+          history.push('/login');
+        }
+        
+      })
+}

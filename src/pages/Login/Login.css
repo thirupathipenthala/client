@@ -1,0 +1,10 @@
+#login-page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-size: 100%;
+}
+.w-100 {
+    width: 100%;
+}

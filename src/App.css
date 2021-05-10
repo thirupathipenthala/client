@@ -31,3 +31,6 @@
 .confirm-box.no-btns .el-message-box__btns {
     display: none;
 }
+.el-picker-panel.el-date-picker {
+    z-index: 10000 !important;
+}

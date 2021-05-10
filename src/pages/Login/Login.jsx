@@ -27,17 +27,9 @@ const Login = () => {
 
                 }
                 else {
-                    if (data.role === 'releaseManager' || 'releaseManager' || 'requester') {
+                    if (data.role === 'releaseManager' || 'releaseApprover' || 'requester') {
 
-                        localStorage.setItem("jwt", data.token)
-                        if (data.role === 'releaseManager') {
-                            data.role = 'Release Manager'
-                        } else if (data.role === 'releaseApprover') {
-                            data.role = 'Release Approver'
-
-                        } else if (data.role === 'requester') {
-                            data.role = 'FOTA Scheduler'
-                        }
+                        localStorage.setItem("jwt", data.token);
                         localStorage.setItem("user", JSON.stringify(data))
 
                         Notification({
@@ -58,9 +50,9 @@ const Login = () => {
             })
     }, [history]);
 
-    return <div id="login-page" className="page">
-        <div>
-            <Layout.Row align="middle" justify="center">
+    return <div id="login-page" className="page" style={{backgroundImage: "url('./images/loginackground.png')"}}>
+        <div className="w-100">
+            <Layout.Row align="middle" justify="center" type="flex">
                 <Layout.Col xs={24} md={6} >
                     <div>
                         <Form model={formData} rules={{
