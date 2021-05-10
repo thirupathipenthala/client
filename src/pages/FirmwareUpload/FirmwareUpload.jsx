@@ -269,177 +269,229 @@ const FirmwareUpload = () => {
 
     }, [deviceList, selectedDeviceList, deviceGroup, page, formRef]);
 
+    const isloggind = false;
 
-    return <div id="firmware-upload-page" className="page">
-        <Loading loading={isLoading} text="Loading...">
-            <NavBar />
-            <Layout.Row>
-                <Layout.Col span={4} className="sidebar-wrapper">
-                    <Sidebar />
-                </Layout.Col>
-                <Layout.Col span={20}>
-                    <div className="page__inner">
-                        <Layout.Row>
-                            <Layout.Col span={24}>
-                                <h4 className="page__title">{role.role}</h4>
-                                <Card>
-                                    <h5>FOTA Upload</h5>
-                                    <Form model={formData} ref={formRef} rules={{
-                                        group_name: [
-                                            {
-                                                required: true,
-                                                trigger: 'blur'
-                                            }
-                                        ],
-                                        /* file: [
-                                             {
-                                                 required: true,
-                                                 trigger: 'blur'
-                                             }
-                                         ],*/
-                                        version: [
-                                            {
-                                                required: true,
-                                                trigger: 'blur'
-                                            }
-                                        ],
-                                        description: [
-                                            {
-                                                required: true,
-                                                trigger: 'blur'
-                                            }
-                                        ],
+    if (isloggind) {
+        return <div id="firmware-upload-page" className="page">
+            <Loading loading={isLoading} text="Loading...">
+                <NavBar />
+                <Layout.Row>
+                    <Layout.Col span={4} className="sidebar-wrapper">
+                        <Sidebar />
+                    </Layout.Col>
+                    <Layout.Col span={20}>
+                        <div className="page__inner">
+                            <Layout.Row>
+                                <Layout.Col span={24}>
+                                    <h4 className="page__title">{role.role}</h4>
+                                    <Card>
+                                        <h5>FOTA Upload</h5>
+                                        <Form model={formData} ref={formRef} rules={{
+                                            group_name: [
+                                                {
+                                                    required: true,
+                                                    trigger: 'blur'
+                                                }
+                                            ],
+                                            /* file: [
+                                                 {
+                                                     required: true,
+                                                     trigger: 'blur'
+                                                 }
+                                             ],*/
+                                            version: [
+                                                {
+                                                    required: true,
+                                                    trigger: 'blur'
+                                                }
+                                            ],
+                                            description: [
+                                                {
+                                                    required: true,
+                                                    trigger: 'blur'
+                                                }
+                                            ],
 
-                                    }}>
-                                        <Layout.Row gutter="20">
-                                            <Layout.Col sm={24} md={8}>
-                                                <Form.Item prop="group_name">
-                                                    <Select className="w-100" placeholder="Group List" onChange={(v) => {
-                                                        updateSelectedGroup(v);
-                                                        updateFormData({ ...formData, group_name: v })
-                                                    }}>
-                                                        {deviceGroup.map((d) => {
-                                                            return <Select.Option label={d.groupName} key={'gl-' + d.groupId} value={d.groupId}>{d.groupName}</Select.Option>
-                                                        })}
-                                                    </Select>
-                                                </Form.Item>
-                                            </Layout.Col>
-                                            <Layout.Col sm={24} md={8}>
-                                                {/* <Checkbox.Group> */}
-                                                <div className="w-100 multi-select-custom">
-                                                    <label className="multi-select-custom__label">{"Device List (" + selectedDeviceList.length + ")"}</label>
-                                                    {/* <Form.Item prop="group_name"> */}
-                                                    <Select multiple value={[]} noDataText="No Data" popperClass={"DL-" + selectedDeviceList.length} className="w-100" placeholder={" "}>
-                                                        {deviceList.length !== 0 ?
-                                                            <Select.Option>
-                                                                <Checkbox checked={selectedDeviceList.length === deviceList.length} label={"Select All"} onChange={() => {
-                                                                    if (selectedDeviceList.length === deviceList.length) {
-                                                                        updateSelectedDeviceList([]);
-                                                                    } else {
-                                                                        const ids = deviceList.map((d) => d.dId)
-                                                                        updateSelectedDeviceList(ids)
-                                                                    }
-                                                                }} />
-                                                            </Select.Option> : null}
-                                                        {deviceList.map((d) => {
-                                                            return <Select.Option key={"dn-" + d.dId}>
-                                                                <div>
+                                        }}>
+                                            <Layout.Row gutter="20">
+                                                <Layout.Col sm={24} md={8}>
+                                                    <Form.Item prop="group_name">
+                                                        <Select className="w-100" placeholder="Group List" onChange={(v) => {
+                                                            updateSelectedGroup(v);
+                                                            updateFormData({ ...formData, group_name: v })
+                                                        }}>
+                                                            {deviceGroup.map((d) => {
+                                                                return <Select.Option label={d.groupName} key={'gl-' + d.groupId} value={d.groupId}>{d.groupName}</Select.Option>
+                                                            })}
+                                                        </Select>
+                                                    </Form.Item>
+                                                </Layout.Col>
+                                                <Layout.Col sm={24} md={8}>
+                                                    {/* <Checkbox.Group> */}
+                                                    <div className="w-100 multi-select-custom">
+                                                        <label className="multi-select-custom__label">{"Device List (" + selectedDeviceList.length + ")"}</label>
+                                                        {/* <Form.Item prop="group_name"> */}
+                                                        <Select multiple value={[]} noDataText="No Data" popperClass={"DL-" + selectedDeviceList.length} className="w-100" placeholder={" "}>
+                                                            {deviceList.length !== 0 ?
+                                                                <Select.Option>
+                                                                    <Checkbox checked={selectedDeviceList.length === deviceList.length} label={"Select All"} onChange={() => {
+                                                                        if (selectedDeviceList.length === deviceList.length) {
+                                                                            updateSelectedDeviceList([]);
+                                                                        } else {
+                                                                            const ids = deviceList.map((d) => d.dId)
+                                                                            updateSelectedDeviceList(ids)
+                                                                        }
+                                                                    }} />
+                                                                </Select.Option> : null}
+                                                            {deviceList.map((d) => {
+                                                                return <Select.Option key={"dn-" + d.dId}>
                                                                     <div>
-                                                                        <Checkbox onChange={() => {
-                                                                            if (!selectedDeviceList.includes(d.dId)) {
-                                                                                const sd = [...selectedDeviceList];
-                                                                                sd.push(d.dId);
-                                                                                updateSelectedDeviceList(sd)
-                                                                            } else {
-                                                                                const i = selectedDeviceList.indexOf(d.dId);
-                                                                                const sd = [...selectedDeviceList];
-                                                                                sd.splice(i, 1);
-                                                                                updateSelectedDeviceList(sd)
-                                                                            }
+                                                                        <div>
+                                                                            <Checkbox onChange={() => {
+                                                                                if (!selectedDeviceList.includes(d.dId)) {
+                                                                                    const sd = [...selectedDeviceList];
+                                                                                    sd.push(d.dId);
+                                                                                    updateSelectedDeviceList(sd)
+                                                                                } else {
+                                                                                    const i = selectedDeviceList.indexOf(d.dId);
+                                                                                    const sd = [...selectedDeviceList];
+                                                                                    sd.splice(i, 1);
+                                                                                    updateSelectedDeviceList(sd)
+                                                                                }
 
-                                                                        }} checked={selectedDeviceList.includes(d.dId)} label={d.serialNo + " - " + d.devType}></Checkbox>
+                                                                            }} checked={selectedDeviceList.includes(d.dId)} label={d.serialNo + " - " + d.devType}></Checkbox>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                            </Select.Option>
-                                                        })}
+                                                                </Select.Option>
+                                                            })}
 
 
-                                                    </Select>
-                                                    {/* </Form.Item> */}
-                                                </div>
-                                                {/* </Checkbox.Group> */}
-                                            </Layout.Col>
-                                        </Layout.Row>
-                                        <Layout.Row gutter="20">
-                                            <Layout.Col sm={24} md={8}>
-                                                <Form.Item prop="file">
-                                                    <input type="file" onChange={(event) => {
-                                                        const file = event.target.files[0];
-                                                        //  console.log(file);
-                                                        const blob = new Blob([file], { type: file.type })
-                                                        //console.log(blob)
-                                                        updateFormData({ ...formData, file: blob, file_name: file.name })
-                                                    }} />
-                                                </Form.Item>
-                                            </Layout.Col>
-                                            <Layout.Col sm={24} md={8}>
-                                                <Form.Item prop="version">
-                                                    <Input type="number" placeholder="Version" onChange={(v) => {
-                                                        updateFormData({ ...formData, version: v })
-                                                    }} />
-                                                </Form.Item>
-                                            </Layout.Col>
-                                            <Layout.Col sm={24} md={8}>
-                                                <Form.Item prop="description">
-                                                    <Input type="text" placeholder="description" onChange={(v) => {
-                                                        updateFormData({ ...formData, description: v })
-                                                    }} />
-                                                </Form.Item>
-                                            </Layout.Col>
-                                        </Layout.Row>
-                                        <Layout.Row style={{ textAlign: "right" }}>
-                                            <Layout.Col>
-                                                <Button type="primary" onClick={() => submitHandler(formData)}>Submit</Button>
-                                            </Layout.Col>
-                                        </Layout.Row>
-                                    </Form>
-                                </Card>
-                            </Layout.Col>
-                        </Layout.Row>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                                                        </Select>
+                                                        {/* </Form.Item> */}
+                                                    </div>
+                                                    {/* </Checkbox.Group> */}
+                                                </Layout.Col>
+                                            </Layout.Row>
+                                            <Layout.Row gutter="20">
+                                                <Layout.Col sm={24} md={8}>
+                                                    <Form.Item prop="file">
+                                                        <input type="file" onChange={(event) => {
+                                                            const file = event.target.files[0];
+                                                            //  console.log(file);
+                                                            const blob = new Blob([file], { type: file.type })
+                                                            //console.log(blob)
+                                                            updateFormData({ ...formData, file: blob, file_name: file.name })
+                                                        }} />
+                                                    </Form.Item>
+                                                </Layout.Col>
+                                                <Layout.Col sm={24} md={8}>
+                                                    <Form.Item prop="version">
+                                                        <Input type="number" placeholder="Version" onChange={(v) => {
+                                                            updateFormData({ ...formData, version: v })
+                                                        }} />
+                                                    </Form.Item>
+                                                </Layout.Col>
+                                                <Layout.Col sm={24} md={8}>
+                                                    <Form.Item prop="description">
+                                                        <Input type="text" placeholder="description" onChange={(v) => {
+                                                            updateFormData({ ...formData, description: v })
+                                                        }} />
+                                                    </Form.Item>
+                                                </Layout.Col>
+                                            </Layout.Row>
+                                            <Layout.Row style={{ textAlign: "right" }}>
+                                                <Layout.Col>
+                                                    <Button type="primary" onClick={() => submitHandler(formData)}>Submit</Button>
+                                                </Layout.Col>
+                                            </Layout.Row>
+                                        </Form>
+                                    </Card>
+                                </Layout.Col>
+                            </Layout.Row>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
 
-                        <Layout.Row gutter="20">
-                            <Layout.Col sm={24} md={5}>
-                                <Select placeholder="Entries" className="w-100">
-                                    <Select.Option>aa</Select.Option>
-                                </Select>
-                            </Layout.Col>
-                            <Layout.Col sm={24} md={5}>
-                                <Input icon="search" placeholder="Search" type="search" className="w-100" />
-                            </Layout.Col>
-                        </Layout.Row>
-                        <Layout.Row gutter="20">
-                            <Layout.Col sm={24}>
-                                <Table className="main-table" columns={columns} data={firmwareList} emptyText="No Data" />
-                            </Layout.Col>
-                        </Layout.Row>
-                        <Layout.Row justify="end" style={{ textAlign: "right" }}>
-                            <Layout.Col>
-                                <Pagination layout="prev, pager, next" total={total} small={true} onCurrentChange={(v) => {
-                                    updatePage(v)
-                                }} />
-                            </Layout.Col>
-                        </Layout.Row>
-                    </div>
-                </Layout.Col>
+                            <Layout.Row gutter="20">
+                                <Layout.Col sm={24} md={5}>
+                                    <Select placeholder="Entries" className="w-100">
+                                        <Select.Option>aa</Select.Option>
+                                    </Select>
+                                </Layout.Col>
+                                <Layout.Col sm={24} md={5}>
+                                    <Input icon="search" placeholder="Search" type="search" className="w-100" />
+                                </Layout.Col>
+                            </Layout.Row>
+                            <Layout.Row gutter="20">
+                                <Layout.Col sm={24}>
+                                    <Table className="main-table" columns={columns} data={firmwareList} emptyText="No Data" />
+                                </Layout.Col>
+                            </Layout.Row>
+                            <Layout.Row justify="end" style={{ textAlign: "right" }}>
+                                <Layout.Col>
+                                    <Pagination layout="prev, pager, next" total={total} small={true} onCurrentChange={(v) => {
+                                        updatePage(v)
+                                    }} />
+                                </Layout.Col>
+                            </Layout.Row>
+                        </div>
+                    </Layout.Col>
 
-            </Layout.Row>
-        </Loading>
-    </div>
+                </Layout.Row>
+            </Loading>
+        </div>
+    } else {
+        return <div id="firmware-upload-page" className="page">
+            <Loading loading={isLoading} text="Loading...">
+                <NavBar />
+                <Layout.Row>
+                    <Layout.Col span={4} className="sidebar-wrapper">
+                        <Sidebar />
+                    </Layout.Col>
+                    <Layout.Col span={20}>
+                        <div className="page__inner">
+                            <Layout.Row>
+                                <Layout.Col span={24}>
+                                    <h4 className="page__title">{role.role}</h4>
+
+                                </Layout.Col>
+                            </Layout.Row>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+                            <Layout.Row gutter="20">
+                                <Layout.Col sm={24} md={5}>
+                                    <Select placeholder="Entries" className="w-100">
+                                        <Select.Option>aa</Select.Option>
+                                    </Select>
+                                </Layout.Col>
+                                <Layout.Col sm={24} md={5}>
+                                    <Input icon="search" placeholder="Search" type="search" className="w-100" />
+                                </Layout.Col>
+                            </Layout.Row>
+                            <Layout.Row gutter="20">
+                                <Layout.Col sm={24}>
+                                    <Table className="main-table" columns={columns} data={firmwareList} emptyText="No Data" />
+                                </Layout.Col>
+                            </Layout.Row>
+                            <Layout.Row justify="end" style={{ textAlign: "right" }}>
+                                <Layout.Col>
+                                    <Pagination layout="prev, pager, next" total={total} small={true} onCurrentChange={(v) => {
+                                        updatePage(v)
+                                    }} />
+                                </Layout.Col>
+                            </Layout.Row>
+                        </div>
+                    </Layout.Col>
+
+                </Layout.Row>
+            </Loading>
+        </div>
+    }
 }
 
 export default FirmwareUpload;
