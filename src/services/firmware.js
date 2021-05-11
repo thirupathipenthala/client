@@ -1,4 +1,4 @@
-import {MessageBox} from 'element-react';
+import { MessageBox } from 'element-react';
 /**
  * get group info details
  */
@@ -72,7 +72,18 @@ export const createFotaFirmware = (formData) => {
 };
 
 
+export const forgotPassword = (email) => {
+    return fetch(`${process.env.REACT_APP_API_PATH}/auth/forget-password`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email
+        })
+    }).then(res => res.json)
 
+}
 export const logout = (history) => {
     MessageBox.msgbox({
         customClass: 'confirm-box',
@@ -84,12 +95,12 @@ export const logout = (history) => {
         confirmButtonClass: 'el-button--danger',
         cancelButtonClass: 'el-button--success',
         confirmButtonText: 'Exit'
-      }).then(action => {
-        if(action === 'confirm') {
-          localStorage.removeItem('jwt');
-          localStorage.removeItem('user');
-          history.push('/login');
+    }).then(action => {
+        if (action === 'confirm') {
+            localStorage.removeItem('jwt');
+            localStorage.removeItem('user');
+            history.push('/login');
         }
-        
-      })
+
+    })
 }
